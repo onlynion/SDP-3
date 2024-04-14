@@ -41,7 +41,7 @@ const CartPage = () => {
         setCartItems(updatedCart);
       });
 
-      refetch()
+      refetch();
   };
 
   // handle decrease function
@@ -71,7 +71,8 @@ const CartPage = () => {
         setCartItems(updatedCart);
       });
 
-      refetch()
+      refetch();
+
     } else{
       alert("Item can't be zero")
     }

@@ -174,7 +174,7 @@ const Navbar = () => {
             className="btn bg-green rounded-full px-6 text-white flex items-center gap-2"
           >
             <FaUser />
-            Contact
+            Login
           </button>
           }
           <Modal/>
