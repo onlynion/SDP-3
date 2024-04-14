@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import logo from "/logo.png";
-import { FaUser } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa";
 import Modal from "./Modal";
 import { AuthContext } from "../contexts/AuthProvider";
 import Profile from "./Profile";
@@ -168,13 +168,11 @@ const Navbar = () => {
           </div>
           </Link>
           {/* login button */}
-          {
-            user? <Profile user={user}/> : <button
-            onClick={() => document.getElementById("my_modal_5").showModal()}
-            className="btn bg-green rounded-full px-6 text-white flex items-center gap-2"
-          >
-            <FaUser />
-            Login
+          { 
+            user ? <>
+           <Profile user={user}/>
+          </> : <button onClick={()=>document.getElementById('my_modal_5').showModal()} className="btn flex items-center gap-2 rounded-full px-6 bg-green text-white">
+            <FaRegUser /> Login
           </button>
           }
           <Modal/>
