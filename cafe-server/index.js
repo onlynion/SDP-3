@@ -6,10 +6,10 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+
+// console.log(process.env.ACCESS_TOKEN_SECRET);
 // user_name: nion
 // password: test123
-
-// 
 
 // middleware
 app.use(cors());
@@ -33,6 +33,9 @@ mongoose
     })
     res.send({token});
   })
+
+  
+
 
 //   import routes here
 const menuRoutes = require('./api/routes/menuRoutes');

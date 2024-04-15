@@ -101,13 +101,13 @@ const CartPage = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, remove it!",
     }).then((result) => {
       if (result.isConfirmed) {
         axios.delete(`http://localhost:6001/carts/${item._id}`).then(response => {
           if (response) {
             refetch();
-             Swal.fire("Deleted!", "Your file has been deleted.", "success");
+             Swal.fire("Removed!", "Your item has been removed.", "success");
            }
         })
         .catch(error => {
