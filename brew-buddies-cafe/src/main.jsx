@@ -4,13 +4,11 @@ import { RouterProvider } from "react-router-dom";
 import router from "./router/Router.jsx";
 import AuthProvider from "./contexts/AuthProvider.jsx";
 
-// tanstack
+// TanStack Query
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
+  useQuery,
 } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();

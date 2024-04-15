@@ -1,133 +1,168 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa";
+import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../contexts/AuthProvider";
+import axios from "axios";
 
 const Modal = () => {
+  const [errorMessage, seterrorMessage] = useState("");
+  const { signUpWithGmail, login } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/";
+
+  //react hook form
   const {
     register,
-    handleSubmit,
+    handleSubmit, reset,
     formState: { errors },
   } = useForm();
-
-  const {signUpWithGmail,login} = useContext(AuthContext);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  // redirecting to home page or specific page
-  const location = useLocation();
-  const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
-    // console.log(email, password);
-    login(email,password).then((result) => {
-      const user = result.user;
-      alert("Login Successfull!")
-      document.getElementById("my_modal_5").close()
-      navigate(from, {replace: true})
-    }).catch((error) => {
+    login(email, password)
+      .then((result) => {
+        // Signed in
+        const user = result.user;
+        const userInfor = {
+          name: data.name,
+          email: data.email,
+        };
+        axios
+          .post("http://localhost:6001/users", userInfor)
+          .then((response) => {
+            // console.log(response);
+            alert("Signin successful!");
+            navigate(from, { replace: true });
+          });
+        // console.log(user);
+        // ...
+      })
+      .catch((error) => {
         const errorMessage = error.message;
-        setErrorMessage('Provide a correct e-mail and password!')
-    })
+        seterrorMessage("Please provide valid email & password!");
+      });
+      reset()
+
   };
 
-  // google sign in
-  const handleLogin = () => {
-    signUpWithGmail().then((result) => {
-      const user = result.user;
-      alert("Login Successfull!")
-      navigate(from, {replace: true})
-    }).catch((error) => console.log(error));
+  // login with google
+  const handleRegister = () => {
+    signUpWithGmail()
+      .then((result) => {
+        const user = result.user;
+        const userInfor = {
+          name: result?.user?.displayName,
+          email: result?.user?.email,
+        };
+        axios
+          .post("http://localhost:6001/users", userInfor)
+          .then((response) => {
+            // console.log(response);
+            alert("Signin successful!");
+            navigate("/");
+          });
+      })
+      .catch((error) => console.log(error));
   };
+
   return (
-    <div>
-      <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
-        <div className="modal-box">
-          <div className="modal-action flex flex-col justify-center mt-0">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="card-body"
-              method="dialog"
-            >
-              <h3 className="font-bold text-lg">Please Login</h3>
+    <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
+      <div className="modal-box">
+        <div className="modal-action flex-col justify-center mt-0">
+          <form
+            className="card-body"
+            method="dialog"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <h3 className="font-bold text-lg">Please Login!</h3>
 
-              {/* email */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
-                <input
-                  type="email"
-                  placeholder="email"
-                  className="input input-bordered"
-                  {...register("email")}
-                />
-              </div>
-
-              {/* password */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Password</span>
-                </label>
-                <input
-                  type="password"
-                  placeholder="password"
-                  className="input input-bordered"
-                  {...register("password")}
-                />
-                <label className="label">
-                  <a href="#" className="label-text-alt link link-hover">
-                    Forgot password?
-                  </a>
-                </label>
-              </div>
-
-              {/* error */}
-              {
-                errorMessage ? <p className="text-red text-xs italic">{errorMessage}</p> : ''
-              }
-
-              {/* login btn */}
-              <div className="form-control mt-6">
-                <input
-                  type="submit"
-                  value="Login"
-                  className="btn btn-primary bg-green text-white border-none"
-                />
-              </div>
-              <p className="text-center my-2">
-                Don't have an account?{" "}
-                <Link to={"/signup"} className="underline text-red ml-1">
-                  Signup Now
-                </Link>{" "}
-              </p>
-              <button
-                htmlFor="my_modal_5"
-                onClick={() => document.getElementById("my_modal_5").close()}
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              >
-                ✕
-              </button>
-            </form>
-
-            {/* social sign in or login */}
-            <div className="text-center space-x-3 mb-5">
-              <button className="btn btn-circle hover:bg-green hover:text-white" onClick={handleLogin}>
-                <FaGoogle />
-              </button>
-              <button className="btn btn-circle hover:bg-green hover:text-white">
-                <FaFacebookF />
-              </button>
+            {/* email */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Email</span>
+              </label>
+              <input
+                type="email"
+                placeholder="email"
+                className="input input-bordered"
+                {...register("email")}
+              />
             </div>
+
+            {/* password */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Password</span>
+              </label>
+              <input
+                type="password"
+                placeholder="password"
+                className="input input-bordered"
+                {...register("password", { required: true })}
+              />
+              <label className="label">
+                <a href="#" className="label-text-alt link link-hover mt-2">
+                  Forgot password?
+                </a>
+              </label>
+            </div>
+
+            {/* show errors */}
+            {errorMessage ? (
+              <p className="text-red text-xs italic">
+                Provide a correct username & password.
+              </p>
+            ) : (
+              ""
+            )}
+
+            {/* submit btn */}
+            <div className="form-control mt-4">
+              <input
+                type="submit"
+                className="btn bg-green text-white"
+                value="Login"
+              />
+            </div>
+
+            {/* close btn */}
+            <div
+              htmlFor="my_modal_5"
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              onClick={() => document.getElementById("my_modal_5").close()}
+            >
+              ✕
+            </div>
+
+            <p className="text-center my-2">
+              Donot have an account?
+              <Link to="/signup" className="underline text-red ml-1">
+                Signup Now
+              </Link>
+            </p>
+          </form>
+          <div className="text-center space-x-3 mb-5">
+            <button
+              onClick={handleRegister}
+              className="btn btn-circle hover:bg-green hover:text-white"
+            >
+              <FaGoogle />
+            </button>
+            <button className="btn btn-circle hover:bg-green hover:text-white">
+              <FaFacebookF />
+            </button>
+            <button className="btn btn-circle hover:bg-green hover:text-white">
+              <FaGithub />
+            </button>
           </div>
         </div>
-      </dialog>
-    </div>
+      </div>
+    </dialog>
   );
 };
 

@@ -13,11 +13,11 @@ const cartSchema = new Schema({
   image: String,
   price: Number,
   quantity: Number,
-  email:{
+  email: {
     type: String,
-    trim: true,
+    true: true,
     required: true,
-  }
+  },
 });
 
 const Carts = mongoose.model("Cart", cartSchema);

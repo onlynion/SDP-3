@@ -1,18 +1,25 @@
 /* eslint-disable react/prop-types */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
+import avatarImg from "/images/avatar.jpg"
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = ({ user }) => {
+  const { logOut } = useContext(AuthContext);
+  const navigate = useNavigate()
 
-  const {logout} = useContext(AuthContext)
-  const handleLogout = () =>{
-    logout().then(() => {
-      // Sign-out successful.
-      alert(user.email + ' has been signed out');
-    }).catch((error) => {
-      // An error happened.
-    });
-  }
+  // logout
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        // Sign-out successful.
+        navigate("/")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div>
       <div className="drawer drawer-end z-50">
@@ -24,9 +31,8 @@ const Profile = ({ user }) => {
             className="drawer-button btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              {
-                user.photoURL ? <img alt="Tailwind CSS Navbar component" src={user.photoURL} /> :  <img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-              }
+              {user.photoURL? <img alt="" src={user.photoURL} /> : <img alt="" src={avatarImg} />}
+              
             </div>
           </label>
         </div>
@@ -42,10 +48,13 @@ const Profile = ({ user }) => {
               <a href="/update-profile">Profile</a>
             </li>
             <li>
-              <a>Order</a>
+              <a href="/order">Order</a>
             </li>
             <li>
-              <a>Setting</a>
+              <a>Settings</a>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
             </li>
             <li>
               <a onClick={handleLogout}>Logout</a>
