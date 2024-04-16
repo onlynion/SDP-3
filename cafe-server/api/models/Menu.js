@@ -16,7 +16,7 @@ const menuSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  },
+  }
 });
 
 // create model
