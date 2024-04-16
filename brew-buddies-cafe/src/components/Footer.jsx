@@ -34,7 +34,7 @@ const Footer = () => {
       <hr />
       <footer className="footer items-center xl:px-24 px-4 py-4 mt-2">
         <aside className="items-center grid-flow-col">
-          <p className="text-xl">Copyright © 2024 - All right reserved <span className="text-xl text-red">CHAION🥹    NITU😊    SHAMMIA🫡    SHUVO🫥    NION😎</span> </p>
+          <p className="text-xl">Copyright © 2024 - All right reserved <span className="text-xl text-red">CHAION🥺    NITU😊    SHAMMIA😴    SHUVO😈    NION😎</span> </p>
         </aside>
         <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
           <a>
