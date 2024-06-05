@@ -1,81 +1,77 @@
 import React, { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaFacebookF, FaGithub, FaGoogle, FaRegUser } from "react-icons/fa";
+import { FaFacebookF, FaGithub, FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import Modal from "./Modal";
 import { AuthContext } from "../contexts/AuthProvider";
-import axios from "axios";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const Signup = () => {
-  const { signUpWithGmail, createUser, updateUserProfile } =
-    useContext(AuthContext);
-    const axiosPublic = useAxiosPublic();
-
+  const { signUpWithGmail, createUser, updateUserProfile, sendVerificationEmail } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const location = useLocation();
-
   const from = location.state?.from?.pathname || "/";
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
     const email = data.email;
     const password = data.password;
-    // console.log(email, password)
     createUser(email, password)
       .then((result) => {
-        // Signed up
         const user = result.user;
-        updateUserProfile(data.email, data.photoURL).then(() => {
-          const userInfor = {
-            name: data.name,
-            email: data.email,
-          };
-          axiosPublic.post("/users", userInfor)
-            .then((response) => {
-              // console.log(response);
-              alert("Signin successful!");
-              navigate(from, { replace: true });
+        sendVerificationEmail()
+          .then(() => {
+            updateUserProfile(data.name, data.photoURL).then(() => {
+              const userInfor = {
+                name: data.name,
+                email: data.email,
+              };
+              axiosPublic.post("/users", userInfor)
+                .then((response) => {
+                  alert("Signup successful! Please check your email for verification.");
+                  navigate(from, { replace: true });
+                });
             });
-        });
+          })
+          .catch((error) => {
+            console.error("Error sending verification email:", error);
+          });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
+        console.error("Error creating user:", error);
       });
   };
 
-  // login with google
   const handleRegister = () => {
     signUpWithGmail()
       .then((result) => {
         const user = result.user;
-        const userInfor = {
-          name: result?.user?.displayName,
-          email: result?.user?.email,
-        };
-        axiosPublic
-          .post("/users", userInfor)
-          .then((response) => {
-            // console.log(response);
-            alert("Signin successful!");
-            navigate("/");
+        sendVerificationEmail()
+          .then(() => {
+            const userInfor = {
+              name: user.displayName,
+              email: user.email,
+            };
+            axiosPublic
+              .post("/users", userInfor)
+              .then((response) => {
+                alert("Signup successful! Please check your email for verification.");
+                navigate("/");
+              });
+          })
+          .catch((error) => {
+            console.error("Error sending verification email:", error);
           });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error("Error signing up with Gmail:", error));
   };
+
   return (
     <div className="max-w-md bg-white shadow w-full mx-auto flex items-center justify-center my-20">
       <div className="mb-5">
         <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
           <h3 className="font-bold text-lg">Please Create An Account!</h3>
-          {/* name */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Name</span>
@@ -87,8 +83,6 @@ const Signup = () => {
               {...register("name")}
             />
           </div>
-
-          {/* email */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
@@ -100,8 +94,6 @@ const Signup = () => {
               {...register("email")}
             />
           </div>
-
-          {/* password */}
           <div className="form-control">
             <label className="label">
               <span className="label-text">Password</span>
@@ -118,11 +110,7 @@ const Signup = () => {
               </a>
             </label>
           </div>
-
-          {/* error message */}
           <p>{errors.message}</p>
-
-          {/* submit btn */}
           <div className="form-control mt-6">
             <input
               type="submit"
@@ -130,7 +118,6 @@ const Signup = () => {
               value="Sign up"
             />
           </div>
-
           <div className="text-center my-2">
             Have an account?
             <Link to="/login">

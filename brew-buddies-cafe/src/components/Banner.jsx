@@ -1,5 +1,6 @@
 import React from "react";
 import bannerImg from "/images/home/banner.png";
+import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
@@ -15,7 +16,7 @@ const Banner = () => {
                 alt=""
                 className="rounded-2xl"
               />
-              <div className="space-y-1">
+              {/* <div className="space-y-1">
                 <h5>Spicy noodles</h5>
                 <div className="rating rating-sm">
                   <input
@@ -50,7 +51,7 @@ const Banner = () => {
                   />
                 </div>
                 <p className="text-red">$18.00</p>
-              </div>
+              </div> */}
             </div>
             <div className="bg-white px-3 py-2 rounded-2xl md:flex items-center gap-3 shadow-sm w-64 hidden">
               <img
@@ -93,7 +94,7 @@ const Banner = () => {
                     readOnly
                   />
                 </div>
-                <p className="text-red">$18.00</p>
+                <p className="text-red">$180</p>
               </div>
             </div>
           </div>
@@ -109,9 +110,12 @@ const Banner = () => {
             Where Each Plate Weaves a Story of Culinary Mastery and Passionate
             Craftsmanship
           </p>
+
+          <Link to={'/menu'}>
           <button className="bg-green font-semibold btn text-white px-8 py-3 rounded-full">
             Order Now
           </button>
+          </Link>
         </div>
       </div>
     </div>

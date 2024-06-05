@@ -27,12 +27,12 @@ const sharedLinks = (
     <li>
         <Link to="/menu"><FaCartShopping/> Menu</Link>
     </li>
-    <li>
+    {/* <li>
         <Link to="/menu"><FaLocationArrow/> Orders Tracking</Link>
-    </li>
-    <li>
+    </li> */}
+    {/* <li>
         <Link to="/menu"><FaQuestionCircle/> Customer Support</Link>
-    </li>
+    </li> */}
   </>
 );
 
@@ -76,16 +76,16 @@ const DashboardLayout = () => {
             </Link>
           </li>
           <hr />
-          <li className="mt-3">
+          {/* <li className="mt-3">
             <Link to="/dashboard">
               <MdDashboard /> Dashboard
             </Link>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <Link to="/dashboard">
               <FaShoppingBag /> Manage Bookings
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/dashboard/add-menu">
               <FaPlusCircle />

@@ -44,30 +44,15 @@ const Navbar = () => {
               <a href="/menu">All</a>
             </li>
             <li>
-              <a>Salad</a>
+              <a href="/menu">Drinks</a>
             </li>
             <li>
-              <a>Pizza</a>
+              <a href="/menu">Food</a>
             </li>
           </ul>
         </details>
       </li>
-      <li tabIndex={0}>
-        <details>
-          <summary>Services</summary>
-          <ul className="p-2">
-            <li>
-              <a>Online Order</a>
-            </li>
-            <li>
-              <a>Table Booking</a>
-            </li>
-            <li>
-              <a>Order Tracking</a>
-            </li>
-          </ul>
-        </details>
-      </li>
+      
       <li>
         <a>Offers</a>
       </li>
@@ -117,22 +102,7 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
         </div>
         <div className="navbar-end ">
-          <button className="btn btn-ghost btn-circle hidden lg:flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
+          
          
          {/* shopping cart */}
          <Link to="/cart-page">

@@ -14,7 +14,7 @@ const Menu = () => {
     // Fetch data from the backend
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:6001/menu");
+        const response = await fetch("https://brewbuddies-cafe-server.onrender.com/menu");
         const data = await response.json();
         setMenu(data);
         setFilteredItems(data); // Initially, display all items
@@ -95,9 +95,7 @@ const Menu = () => {
               Greek Salad, Lasagne, Butternut Pumpkin, Tokusen Wagyu, Olivas
               Rellenas and more for a moderate cost
             </p>
-            <button className="bg-green font-semibold btn text-white px-8 py-3 rounded-full">
-              Order Now
-            </button>
+            
           </div>
         </div>
       </div>

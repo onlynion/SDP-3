@@ -35,7 +35,7 @@ const Cards = ({ item }) => {
       };
 
       axios
-        .post("http://localhost:6001/carts", cartItem)
+        .post("https://brewbuddies-cafe-server.onrender.com/carts", cartItem)
         .then((response) => {
           console.log(response);
           if (response) {
@@ -148,7 +148,7 @@ export default Cards;
 //         email: user.email,
 //       };
 //       // console.log(cartItems);
-//       fetch("http://localhost:6001/carts", {
+//       fetch("https://brewbuddies-cafe-server.onrender.com/carts", {
 //         method: "POST",
 //         headers: {
 //           "content-type": "application/json",

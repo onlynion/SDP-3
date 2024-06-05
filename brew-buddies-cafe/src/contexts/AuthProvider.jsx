@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
-import { createContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -10,9 +9,8 @@ import {
   signInWithPopup,
   signOut,
   updateProfile,
+  sendEmailVerification,
 } from "firebase/auth";
-import { useState } from "react";
-import { useEffect } from "react";
 import app from "../firebase/firebase.config";
 import axios from "axios";
 
@@ -43,7 +41,6 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-  // update your profile
   const updateUserProfile = (name, photoURL) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
@@ -51,14 +48,18 @@ const AuthProvider = ({ children }) => {
     });
   };
 
+  const sendVerificationEmail = () => {
+    return sendEmailVerification(auth.currentUser, {
+      url: "http://localhost:5173", // Change port as necessary
+    });
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // console.log(currentUser);
       setUser(currentUser);
       if (currentUser) {
         const userInfo = { email: currentUser.email };
-        axios.post("http://localhost:6001/jwt", userInfo).then((response) => {
-          // console.log(response.data.token);
+        axios.post("https://brewbuddies-cafe-server.onrender.com/jwt", userInfo).then((response) => {
           if (response.data.token) {
             localStorage.setItem("access-token", response.data.token);
           }
@@ -66,13 +67,10 @@ const AuthProvider = ({ children }) => {
       } else {
         localStorage.removeItem("access-token");
       }
-
       setLoading(false);
     });
 
-    return () => {
-      return unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {
@@ -83,6 +81,7 @@ const AuthProvider = ({ children }) => {
     logOut,
     signUpWithGmail,
     updateUserProfile,
+    sendVerificationEmail,
   };
 
   return (
